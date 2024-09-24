@@ -11,8 +11,7 @@ import { Link } from 'react-router-dom';
 
 
 
-
-const List = () => {
+const List2 = () => {
 
     /*---상태관리 변수들(값이 변화면 화면 랜더링)  ----------*/
     const [personList,setPersonList] = useState([]);
@@ -60,7 +59,7 @@ const List = () => {
 
         axios({
             method: 'delete', 			// put, post, delete                   
-            url: 'http://localhost:9000/api/persons/'+no,
+            url: `http://localhost:9000/api/persons/${no}`,
         
                                                                                               //get delete
             //headers: { "Content-Type": "application/json; charset=utf-8" },  // post put
@@ -80,17 +79,24 @@ const List = () => {
             //getPersonList();
 
             if(response.data.result === 'success'){
-
+                let newArray = personList.filter((person)=>{
+                    return person.personId !== no
+                });
+                    
+                setPersonList(newArray);
+                
             }else{
                 alert(response.data.message);
             }
-
         
         }).catch(error => {
             console.log(error);
         });
         
     };
+
+    
+    
 
 
     // 1.이벤트 잡기
@@ -125,7 +131,7 @@ const List = () => {
                                         <td>{personVo.company}</td>
                                     </tr>
                                     <tr>
-                                        <td><Link to={'/editForm/'+ personVo.personId}>[수정폼으로 이동]</Link></td>
+                                        <td><Link to={`/editForm/${personVo.personId}`}>[수정폼으로 이동]</Link></td>
                                         <td><button type="button" onClick={()=>{handleDel(personVo.personId)}}>삭제</button></td>
                                     </tr>
 
@@ -141,4 +147,4 @@ const List = () => {
     );
 }
 
-export default List;
+export default List2;
